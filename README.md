@@ -1,7 +1,7 @@
 AxProf
 ======
 
-A framework for accuracy profiling of randomized approximate algorithm implementations. See `paper.pdf` for a full description of AxProf (to appear in ICSE 2019).
+A framework for accuracy profiling of randomized approximate algorithm implementations. See `ICSE-2019-Paper.pdf` for a full description of AxProf (to appear in ICSE 2019).
 
 ---
 
