@@ -10,7 +10,8 @@ Directory structure
 
 * `AxProf` contains the source of AxProf.
 * `AxProf/checkerGen` contains the checker function generator component of AxProf.
-* `scripts` contains a tutorial script that uses AxProf.
+* `tutorial` contains a tutorial script that uses AxProf.
+* `examples` contains example scripts for testing some of the benchmarks from the conference paper.
 
 ---
 
@@ -34,4 +35,16 @@ Next, run the following commands from the root directory of this repository:
 Tutorial
 --------
 
-A tutorial for using AxProf is available in `scripts/tutorial.py`
+A tutorial for using AxProf is available in `tutorial/tutorial.py`
+
+---
+
+Example
+-------
+
+An example script for testing [`ekzhu/datasketch`](https://github.com/ekzhu/datasketch) is provided in `examples/hllEkzhu.py`. To run the script, you must first clone the `datasketch` repository. Run the following commands from the root directory of this repository:
+
+    cd examples
+    git clone https://github.com/ekzhu/datasketch.git
+
+Now you can run `examples/hllEkzhu.py` to test the library.
