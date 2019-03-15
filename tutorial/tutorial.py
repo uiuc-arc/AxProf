@@ -101,23 +101,30 @@ def inputParams(config, inputNum):
 # the amount of time consumed, and the amount of memory used. The task of time
 # and memory usage measurement is left to the runner.
 
-# In this case we do not need to call an external program. We flip the coins,
-# add their face values, measure the time taken to do so, and return the output.
-
 def runner(inputFileName, config):
-  numCoins = config['coins']
-  random.seed() # Seed RNG
-  coinSum = 0
   startTime = time.time() # Start measuring time
-  for i in range(numCoins):
-    # Randomly pick 0 or 1 and add it to the sum
-    # Adding more 0s or 1s will skew the results to simulate an unfair coin
-    # AxProf should be able to detect this skew
-    coinSum += random.choice([0,1])
+  coinSum = flipCoins(config['coins'])
   endTime = time.time() # Stop measuring time
   # Prepare result; we don't measure memory but must specify it, so set it to 0
   result = {'acc': coinSum, 'time': (endTime-startTime), 'space': 0}
   return result
+
+
+def flipCoins(numCoins):
+  random.seed() # Seed RNG
+  coinSum = 0
+  for i in range(numCoins):
+    # Randomly pick 0 or 1 and add it to the sum
+    # Adding more 0s or 1s will skew the results to simulate an unfair coin
+    # AxProf should be able to detect this skew (unless it is small)
+    coinSum += random.choice([0,1])
+  return coinSum
+
+# The flipCoins function flips the coins, adds their face values, measures the
+# time taken to do so, and returns the output. In this simple case, this
+# function comprises the entirety of the implementation of the coin flip program
+# that we are testing with AxProf. The rest of the code is used to test this
+# implementation using AxProf.
 
 # ==============================================================================
 
