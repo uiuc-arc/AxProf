@@ -8,7 +8,18 @@ sys.path.append('../AxProf')
 import AxProf
 
 sys.path.append('./datasketch')
-from datasketch import hyperloglog
+
+try:
+  from datasketch import hyperloglog
+except ModuleNotFoundError:
+  print(
+"""
+Error: datasketch library not found!
+Please follow instructions for downloading the datasketch library in the
+'Example' section of README.md in the root directory of this repository.
+""")
+  exit(-1)
+  
 
 configlist = {'k': [8, 10, 12, 14],
               'datasize': range(10000, 110000, 10000)}
