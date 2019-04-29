@@ -1,3 +1,10 @@
+# AxProf example for testing the HyperLogLog implementation in ekzhu/datasketch
+
+# NOTICE:
+# This example requries the datasketch library
+# Please follow instructions for downloading the datasketch library in the
+# 'Example' section of README.md in the root directory of this repository.
+
 import sys
 import time
 import pickle
