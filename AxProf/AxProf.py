@@ -4,7 +4,7 @@ import numpy as np
 import os
 import sys
 from scipy.optimize import curve_fit
-from scipy.stats import chisquare, binom_test, combine_pvalues, ttest_1samp, wilcoxon
+from scipy.stats import chisquare, binom_test, combine_pvalues, ttest_1samp, wilcoxon, norm
 import itertools
 import time
 import queue
@@ -77,6 +77,8 @@ def fitFuncToData(data, func, funcParams, paramNames):
   r_sqd = 1 - sum_sqd_residuals / sum_sqd_total
   return popt, r_sqd
 
+def binomialSamplesReqd(alpha=0.05, beta=0.2, delta=0.1):
+  return math.ceil((((norm.ppf(1-alpha/2)*0.5)+(norm.ppf(1-beta)*math.sqrt(0.25-delta**2)))/delta)**2+(1/delta))
 
 def generateFunctionsFromSpec(spec):
   # Writing spec to file to use with the java antlr backend
@@ -136,9 +138,11 @@ def checkProperties(configDict, runs, inputs, inputGen, inputGenParams, runner,
   else:
     print("No specification provided, using user-provided functions directly")
 
+  samplesReqd = binomialSamplesReqd(alpha=0.05, beta=0.2, delta=0.1)
+
   if runs is None:
     if (perRunFunc is None) and (perInpFunc is not None):
-      runs = 200
+      runs = samplesReqd
     elif (perRunFunc is not None) and (perInpFunc is None):
       runs = 320
     else:
@@ -151,7 +155,7 @@ def checkProperties(configDict, runs, inputs, inputGen, inputGenParams, runner,
     if perConfigFunc is None:
       inputs = 1
     else:
-      inputs = 200
+      inputs = samplesReqd
     print("Selected no. of required inputs:", inputs)
   else:
     print("Using user-provided no. of inputs:", inputs)
