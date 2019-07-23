@@ -1,4 +1,6 @@
 import math
+import sys
+import copy
 
 import opentuner
 from opentuner import ConfigurationManipulator
@@ -10,9 +12,9 @@ from opentuner.measurement.inputmanager import FixedInputManager
 import AxProf
 import AxProfUtil
 
-class OpentunerInterface(MeasurementInterface):
+class AxProfTunerInterface(MeasurementInterface):
 
-  def __init__(self, args, stableParams, adjParams, accParamNum, tuneRuns, verifyRuns, inputGen, inputGenParams, runner, spec, accMetric):
+  def __init__(self, args, stableParams, adjParams, accParam, tuneRuns, verifyRuns, inputGen, inputGenParams, runner, spec, accMetric):
     self.stableParams = stableParams
     self.adjParams = adjParams
     self.tuneRuns = tuneRuns
@@ -22,11 +24,12 @@ class OpentunerInterface(MeasurementInterface):
     self.runner = runner
     self.spec = spec
     self.accMetric = accMetric
-    self.inputData = inputGen(*inputGenParams)
+    igParams = inputGenParams(stableParams, 1)
+    self.inputData = inputGen(*igParams)
     AxProfUtil.writeDataToFile(self.inputData, AxProf.defaultInputFileName)
-    objective = ThresholdAccuracyMinimizeTime(stableParams[accParamNum])
+    objective = ThresholdAccuracyMinimizeTime(stableParams[accParam])
     input_manager = FixedInputManager()
-    super(MyCMSTuner, self).__init__(args, objective=objective, input_manager=input_manager)
+    super(AxProfTunerInterface, self).__init__(args, objective=objective, input_manager=input_manager)
 
   def manipulator(self):
     manipulator = ConfigurationManipulator()
@@ -35,21 +38,23 @@ class OpentunerInterface(MeasurementInterface):
     return manipulator
 
   def run(self, desired_result, input, limit):
-    adjParamVals = desired_result.configuration.data
-    allParamVals = adjParamVals.update(self.stableParams)
+    allParamVals = copy.deepcopy(desired_result.configuration.data)
+    allParamVals.update(self.stableParams)
+    print(allParamVals)
     minAcc = math.inf
     maxTime = 0
     for run in range(self.tuneRuns):
       sys.stdout.write('.')
       sys.stdout.flush()
       output = self.runner(AxProf.defaultInputFileName, allParamVals)
-      acc = self.accMetric(self.inputData,output['acc'],allParamvals)
+      acc = self.accMetric(self.inputData,output['acc'],allParamVals)
       time = output['time']
       if acc<minAcc:
         minAcc = acc
       if time>maxTime:
         maxTime = time
-    return Result(time=maxTime,size=0,accuracy=minAcc)
+    print(maxTime,minAcc)
+    return Result(time=maxTime,size=1,accuracy=minAcc)
 
   def save_final_config(self, configuration):
     #TODO verify result
