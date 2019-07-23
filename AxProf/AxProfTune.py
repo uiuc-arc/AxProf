@@ -57,17 +57,19 @@ class AxProfTunerInterface(MeasurementInterface):
     return Result(time=maxTime,size=1,accuracy=minAcc)
 
   def save_final_config(self, configuration):
-    #TODO verify result
-    #adjParamVals = desired_result.configuration.data
-    #allParamVals = adjParamVals.update(self.stableParams)
-    #configDict = {a:[b] for a, b in allParamVals.items()}
-    #AxProf.checkProperties(configDict, self.tuneRuns, 1, self.inputGen, self.inputGenParams, self.runner, spec=self.spec)
     bestresult = self.driver.results_query(config=configuration, objective_ordered=True)[0]
-    print("Optimal configuration for",self.stableParams)
     adjParamVals = {}
     for param in self.adjParams:
       name = param.name
       adjParamVals[name] = configuration.data[name]
+    allParamVals = copy.deepcopy(adjParamVals)
+    allParamVals.update(self.stableParams)
+    #verify result
+    print("Verifying result for optimal configuration")
+    configDict = {a:[b] for a, b in allParamVals.items()}
+    AxProf.checkProperties(configDict, self.verifyRuns, 1, self.inputGen, self.inputGenParams, self.runner, spec=self.spec)
+    print("Verfication complete")
+    print("Optimal configuration for",self.stableParams)
     print(adjParamVals)
     print("Optimal time:",bestresult.time)
     sys.stdout.flush()
