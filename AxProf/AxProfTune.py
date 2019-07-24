@@ -14,9 +14,10 @@ import AxProfUtil
 
 class AxProfTunerInterface(MeasurementInterface):
 
-  def __init__(self, args, stableParams, adjParams, accParam, tuneRuns, verifyRuns, inputGen, inputGenParams, runner, spec, accMetric):
+  def __init__(self, args, stableParams, adjParams, accThresh, tuneRuns, verifyRuns, inputGen, inputGenParams, runner, spec, accMetric):
     self.stableParams = stableParams
     self.adjParams = adjParams
+    self.accThresh = accThresh
     self.tuneRuns = tuneRuns
     self.verifyRuns = verifyRuns
     self.inputGen = inputGen
@@ -27,7 +28,7 @@ class AxProfTunerInterface(MeasurementInterface):
     igParams = inputGenParams(stableParams, 1)
     self.inputData = inputGen(*igParams)
     AxProfUtil.writeDataToFile(self.inputData, AxProf.defaultInputFileName)
-    objective = ThresholdAccuracyMinimizeTime(stableParams[accParam])
+    objective = ThresholdAccuracyMinimizeTime(accThresh)
     input_manager = FixedInputManager()
     super(AxProfTunerInterface, self).__init__(args, objective=objective, input_manager=input_manager)
 
@@ -69,7 +70,7 @@ class AxProfTunerInterface(MeasurementInterface):
     configDict = {a:[b] for a, b in allParamVals.items()}
     AxProf.checkProperties(configDict, self.verifyRuns, 1, self.inputGen, self.inputGenParams, self.runner, spec=self.spec)
     print("Verfication complete")
-    print("Optimal configuration for",self.stableParams)
+    print("Optimal configuration for",self.stableParams,"and accuracy threshold",self.accThresh)
     print(adjParamVals)
     print("Optimal time:",bestresult.time)
     sys.stdout.flush()
