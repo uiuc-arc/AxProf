@@ -22,7 +22,7 @@ First, install the required dependencies. Assuming your system is running Ubuntu
 
     sudo apt update
     sudo apt install python-pip python3-pip cmake build-essential python3-tk
-    sudo pip install schema psutil numpy scipy pulp scikit-learn matplotlib
+    sudo pip install schema psutil numpy scipy scikit-learn matplotlib
     sudo pip3 install mmh3 numpy scipy pulp scikit-learn matplotlib minepy
 
 Next, run the following commands from the root directory of this repository:

@@ -9,7 +9,6 @@ import itertools
 import time
 import queue
 import scipy
-import pulp
 import subprocess
 from minepy import MINE
 import random
