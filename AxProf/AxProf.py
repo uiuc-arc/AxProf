@@ -76,8 +76,10 @@ def fitFuncToData(data, func, funcParams, paramNames):
   r_sqd = 1 - sum_sqd_residuals / sum_sqd_total
   return popt, r_sqd
 
-def binomialSamplesReqd(alpha=0.05, beta=0.2, delta=0.1):
-  return math.ceil((((norm.ppf(1-alpha/2)*0.5)+(norm.ppf(1-beta)*math.sqrt(0.25-delta**2)))/delta)**2+(1/delta))
+def binomialSamplesReqd(alpha=0.05, beta=0.2, delta=0.1, tails=2, p0=0.5):
+  adjAlpha = alpha/tails
+  pa = p0-delta if p0 > 0.5 else p0+delta
+  return math.ceil((((norm.ppf(1-adjAlpha)*math.sqrt(p0*(1-p0)))+(norm.ppf(1-beta)*math.sqrt(pa*(1-pa))))/delta)**2+(1/delta))
 
 def generateFunctionsFromSpec(spec):
   # Writing spec to file to use with the java antlr backend
