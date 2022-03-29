@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 # AxProf Tutorial : checking if a coin is fair
 
 # This tutorial shows how to test a simple program with AxProf while also
@@ -153,7 +155,7 @@ if __name__ == '__main__':
 
 # ==============================================================================
 
-# To run this script, run `python3 tutorial.py` from this directory. First,
+# To run this script, run `./tutorial.py` from this directory. First,
 # AxProf prints the code generated from the spec. This includes code to check
 # accuracy, some utility code, code to write time data to a file, and fit a
 # curve to the time data (in this case a linear function over the number of
