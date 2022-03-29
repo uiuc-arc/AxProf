@@ -18,16 +18,15 @@ Directory structure
 Setup
 -----
 
-First, install the required dependencies. Assuming your system is running Ubuntu 18.04, run the following commands:
+First, install the required dependencies. Assuming your system is running Ubuntu 20.04, run the following commands:
 
     sudo apt update
-    sudo apt install python-pip python3-pip cmake build-essential python3-tk
-    sudo pip install schema psutil numpy scipy scikit-learn matplotlib
-    sudo pip3 install mmh3 numpy scipy pulp scikit-learn matplotlib minepy
+    sudo apt install build-essential default-jdk python3-pip
+    sudo python3 -m pip install numpy scipy matplotlib minepy
 
 Next, run the following commands from the root directory of this repository:
 
-    cd ./AxProf/checkerGen
+    cd AxProf/checkerGen
     make
 
 ---
@@ -35,7 +34,7 @@ Next, run the following commands from the root directory of this repository:
 Tutorial
 --------
 
-A tutorial for using AxProf is available in `tutorial/tutorial.py`
+A tutorial for using AxProf is available in `tutorial/tutorial.py`.
 
 ---
 
