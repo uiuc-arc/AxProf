@@ -166,6 +166,7 @@ def checkProperties(configDict, runs, inputs, inputGen, inputGenParams, runner,
   outputList = dict.fromkeys(configList)
 
   # Run each configuration and run the checker functions
+  allChecksPassed = True
   for config in configList:
     cfgAggregate = None
     thisConfigDict = {}
@@ -185,14 +186,14 @@ def checkProperties(configDict, runs, inputs, inputGen, inputGenParams, runner,
         output = runner(defaultInputFileName, thisConfigDict)
         if perRunFunc:
           if not skipAcc:
-            perRunFunc(thisConfigDict, inputData, output)
+            allChecksPassed &= perRunFunc(thisConfigDict, inputData, output)
         if inpAgg:
           inpAggregate = inpAgg(inpAggregate, run, output)
       sys.stdout.write('\n')
       sys.stdout.flush()
       if perInpFunc:
         if not skipAcc:
-          perInpFunc(thisConfigDict, inputData, runs, inpAggregate)
+          allChecksPassed &= perInpFunc(thisConfigDict, inputData, runs, inpAggregate)
       if cfgAgg:
           cfgAggregate = cfgAgg(cfgAggregate, input_num, inpAggregate)
       elif inputs == 1:
@@ -204,8 +205,12 @@ def checkProperties(configDict, runs, inputs, inputGen, inputGenParams, runner,
           cfgAggregate.append(inpAggregate)
     if perConfigFunc:
       if not skipAcc:
-        perConfigFunc(thisConfigDict, runs, inputs, cfgAggregate)
+        allChecksPassed &= perConfigFunc(thisConfigDict, runs, inputs, cfgAggregate)
     outputList[config] = cfgAggregate
+  if allChecksPassed:
+    print("All checks passed!")
+  else:
+    print("One or more checks failed.")
   if finalFunc:
     finalFunc(paramNames, outputList, runs, inputs)
   os.system("rm -f {} {} _axprof_temp_input".format(defaultInputFileName, defaultOutputFileName))
