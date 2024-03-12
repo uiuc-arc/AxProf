@@ -22,7 +22,7 @@ First, install the required dependencies. Assuming your system is running Ubuntu
 
     sudo apt update
     sudo apt install build-essential default-jdk python3-pip
-    sudo python3 -m pip install numpy scipy matplotlib minepy
+    sudo python3 -m pip install numpy==1.24.3 scipy==1.10.1 matplotlib==3.7.1 minepy==1.2.6
 
 Next, run the following commands from the root directory of this repository:
 
