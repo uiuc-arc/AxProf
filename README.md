@@ -18,12 +18,13 @@ Directory structure
 Setup
 -----
 
-First, install the required dependencies. Assuming your system is running Ubuntu 20.04, run the following commands:
+First, install the required dependencies. Assuming your system is running Ubuntu 20.04 and Python 3.8, run the following commands:
 
     sudo apt update
     sudo apt install build-essential default-jdk python3-pip
     sudo python3 -m pip install numpy==1.24.3 scipy==1.10.1 matplotlib==3.7.1 minepy==1.2.6
 
+Note that newer versions of Python 3 (e.g., 3.11) may not support AxProf. Use `pyenv` if necessary to run AxProf in a Python 3.8 environment.
 Next, run the following commands from the root directory of this repository:
 
     cd AxProf/checkerGen
